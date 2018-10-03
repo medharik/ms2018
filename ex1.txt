@@ -1,0 +1,161 @@
+ex1 :
+Q1:
+En premier lieu, il est très fortement déconseillé d'autoriser un utilisateur à utiliser le tablespace SYSTEM, qui doit impérativement rester dédié au dictionnaire de données.
+Q2:
+Il faut définir le tablespace de données et le tablespace temporaire de l'utilisateur afin d'éviter toute écriture dans le tablespace SYSTEM (qui est assigné si aucun tablespace par défaut n'est défini) 
+
+Q3 :
+Un rôle est un regroupement de privilèges. Une fois créé il peut être assigné à un utilisateur ou à un autre rôle.
+
+
+Un profil est un ensemble de limitations système. Une fois qu'un profil a été assigné à un utilisateur celui-ci ne pourra plus dépasser les limitations imposées
+
+
+
+Q4 :
+Un serveur Oracle est constitué d'une instance Oracle et d'une base de données Oracle. L'instance
+Oracle comprend une région de la mémoire appelée La SGA (System Global Area). La SGA contient
+des données et des informations de contrôle sur le serveur Oracle. 
+
+()
+
+La zone SGA (System Global Area) assurant le partage des données des différents utilisateurs, c'est-à-dire qu'il s'agit de la zone contenant les structures de données accessibles par tous les processus
+
+Q5 :
+
+permet de modifier le profil app_user 
+
+si le l'utilsateur atteint un nombre de tentatives de connexion égale à 5   son compte sera vérouillé pendant une période de 1 jours
+
+
+Q6
+
+FN1 :
+ Une relation est en première forme normale si
+tous ses attributs sont atomiques (inhérent au
+modèle relationnel
+
+ Un attribut atomique n'accepte pas une liste de valeurs et n'est pas composé
+
+FN2:
+Une Relation en Deuxième forme normale si elle est en première forme normale  et respectant le principe suivant :
+Un attribut non clé ne dépend pas d'une partie de la clé mais de toute la clé .
+Corollaire : Une relation ayant une clé formée d'un seul attribut est donc en deuxième forme normale.
+
+FN3:
+Une Relation en Troisième  forme normale si elle est en deuxième forme normale  et respectant le principe suivant :
+ Tous les attributs non clé doivent dépendre directement de la clé
+
+ Q7 :
+ FN1
+
+
+ Q8 :
+ Donnez la requête SQL permettant de lister les identificateurs de tous les accessoires utilisés
+dans tous les films ?
+
+select distinct  idaccessoire from utilisation 
+group by idaccessoire  
+having count(*) = (
+select count(*) from film 
+)
+
+Q9 :
+Donnez la requête SQL permettant de lister les identificateurs des accessoires non utilisés.
+
+select idaccessoire from accessoire
+where idaccessoire not in (
+select idaccessoire from utilisation 
+)
+
+Q10 :
+Donnez la requête SQL permettant de lister les noms des accessoires non utilisés.
+
+select libelleacc from accessoire
+where idaccessoire not in (
+select idaccessoire from utilisation 
+)
+
+Q11 :
+
+Donnez la requête SQL permettant de lister le nom du film et le nom du metteur en scène des
+films triller tournés un mois de juin
+
+
+select film.nom , artiste.nom  from film , artiste  , genre
+where film.idmetteurES = artiste.idArtiste
+and film.idgenre=genre.idgenre
+and genre.libelle='triller'
+and 
+MONTH(film.date)=6
+
+Q12 :
+Donnez la requête SQL permettant de lister le nom de l’acteur ayant joué le plus de film en Inde
+
+select artiste.idartiste, artiste.nom  from artiste , role , film , pays
+where artiste.idartiste = role.idacteur 
+and role.idfilm=film.idfilm
+and film.codepays=pays.codepays
+and pays.nom='Inde'
+group by artiste.idartiste, artiste.nom
+having count(*) >= all (
+select count(*)  from artiste , role , film , pays
+where artiste.idartiste = role.idacteur 
+and role.idfilm=film.idfilm
+and film.codepays=pays.codepays
+and pays.nom='Inde'
+group by artiste.idartiste
+)
+
+Q13 :
+Donnez la requête SQL permettant de lister les noms des acteurs ayant joué avec John WAYNE.
+
+select artiste.nom from artiste , role , film
+where 
+artiste.idartiste=role.idacteur
+and film.idfilm=role.idfilm
+
+and film.idfilm in (
+select film.idfilm from artiste , role , film
+where 
+artiste.idartiste=role.idacteur
+and film.idfilm=role.idfilm and 
+artiste.prenom='John' and 
+artiste.nom='WAYNE'
+)
+
+
+
+QCM :
+
+22- a
+23-c
+24-c
+25 -a
+26-a
+27-
+28-a
+29 ?
+30-d
+31-a
+32-c
+33 -d
+34-b
+35-c
+
+
+51 -a
+
+52-b
+
+53-d
+54-c
+55-d
+56-a
+57-c
+
+
+
+62-a
+63-b
+
